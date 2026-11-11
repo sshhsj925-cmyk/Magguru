@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sundala</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Sun<span class="logo-dot">dala</span></h1>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">Dark</button>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab" data-tab="foto"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg></span><span class="mid"><span class="steps"><span><em>1</em>Capture</span><span><em>2</em>Upload</span><span><em>3</em>Solve</span></span><small>Get a worked solution, step by step</small></span><span class="lbl"><b>Foto</b><span class="sub">Snap homework, get steps</span></span></button>
+    <button class="tab" data-tab="speaking"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></svg></span><span class="mid"><span class="wave"><i style="--h:30%;--d:0.00s"></i><i style="--h:55%;--d:0.11s"></i><i style="--h:80%;--d:0.22s"></i><i style="--h:45%;--d:0.33s"></i><i style="--h:95%;--d:0.44s"></i><i style="--h:60%;--d:0.55s"></i><i style="--h:35%;--d:0.66s"></i><i style="--h:75%;--d:0.77s"></i><i style="--h:50%;--d:0.88s"></i><i style="--h:28%;--d:0.99s"></i></span><small>Read aloud and see instant word feedback</small></span><span class="lbl"><b>Speaking</b><span class="sub">Practice your pronunciation</span></span></button>
+    <button class="tab" data-tab="pomodoro"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4"/><path d="M12 14l3-3"/><circle cx="12" cy="14" r="8"/></svg></span><span class="mid"><span class="big-time" id="miniTime">25:00</span><span class="bar"><i id="miniBar"></i></span></span><span class="lbl"><b>Pomodoro</b><span class="sub">Stay focused, take breaks</span></span></button>
+    <button class="tab" data-tab="quiz"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span><span class="mid"><span class="dots" id="miniDots"><i></i><i></i><i></i><i></i><i></i></span><small id="miniQuiz">5 questions · grammar and vocabulary</small></span><span class="lbl"><b>Quiz</b><span class="sub">Test your English</span></span></button>
+    <button class="tab" data-tab="sign"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0M14 10V4a2 2 0 0 0-4 0v2M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-5.9-2.4L3.4 16a2 2 0 0 1 3.2-2.4L8 15"/></svg></span><span class="mid"><span class="chips"><span>A–Z</span><span>Fingerspelling</span><span>Auto-type</span></span><small>Hand tracking, runs on your device</small></span><span class="lbl"><b>Sign Language</b><span class="sub">Hand gestures to text</span></span></button>
+  </nav>
+
+  <section class="panel" id="foto">
+    <h2>Foto</h2>
+    <p class="note" style="margin:-6px 0 12px">Photograph your homework and the AI will answer with step-by-step explanations.</p>
+    <video id="video" autoplay playsinline muted hidden></video>
+    <canvas id="snap" hidden></canvas>
+    <div class="status yellow" id="camStatus">Camera off</div>
+    <button class="action" id="camStart">Open camera</button>
+    <button class="action ghost" id="camStop" disabled>Stop</button>
+    <button class="action" id="camSnap" disabled>Capture</button>
+    <button class="action ghost" id="fotoUpload">Upload photo</button>
+    <input type="file" id="fotoFile" accept="image/*" hidden>
+    <textarea class="input" id="fotoNote" rows="2" placeholder="Optional note, e.g. &quot;Explain number 3 only&quot;"></textarea>
+    <button class="action" id="fotoSolve" disabled>Solve step by step</button>
+    <div class="box answer" id="fotoAnswer" hidden></div>
+  </section>
+
+  <section class="panel" id="speaking">
+    <h2>Speaking</h2>
+    <div class="target-sentence" id="target"></div>
+    <div class="status" id="readStatus"></div>
+    <div class="box" id="heard"></div>
+    <button class="action" id="readStart">Start speaking</button>
+    <button class="action ghost" id="readSpeak">Listen</button>
+    <button class="action ghost" id="readNext">Next sentence →</button>
+    <p class="note">Green = correct, red = try again.</p>
+  </section>
+
+  <section class="panel" id="pomodoro">
+    <h2>Pomodoro</h2>
+    <div class="timer" id="timer">25:00</div>
+    <div class="status" id="timerStatus" style="text-align:center"></div>
+    <div style="text-align:center">
+      <button class="action ghost on" data-min="25">25 min</button>
+      <button class="action ghost" data-min="5">5 min</button>
+      <button class="action ghost" data-min="15">15 min</button>
+    </div>
+    <div style="text-align:center">
+      <button class="action" id="tStart">Start</button>
+      <button class="action ghost" id="tReset">Reset</button>
+    </div>
+  </section>
+
+  <section class="panel" id="quiz">
+    <h2>Quiz</h2>
+    <div id="quizBox"></div>
+    <div class="status" id="quizScore"></div>
+    <button class="action" id="quizNext" disabled>Next →</button>
+  </section>
+
+  <section class="panel" id="sign">
+    <h2>Sign Language</h2>
+    <div class="cam" id="signCam" hidden><video id="signVideo" autoplay playsinline muted></video></div>
+    <div class="status yellow" id="signStatus">Camera off</div>
+    <div class="box" id="signLive">—</div>
+    <div class="sign-output" id="signOut"></div>
+    <button class="action" id="signStart">Start camera</button>
+    <button class="action ghost" id="signStop" disabled>Stop</button>
+    <button class="action" id="signTranslate" disabled>Add letter</button>
+    <button class="action ghost" id="signAuto" disabled>Auto: off</button>
+    <button class="action ghost" id="signSpace">Space</button>
+    <button class="action ghost" id="signBack">⌫</button>
+    <button class="action ghost" id="signSpeak">Speak</button>
+    <button class="action ghost" id="signClear">Clear</button>
+    <button class="action ghost" id="signTrainBtn">Train letters</button>
+    <div id="signTrain" hidden></div>
+    <p class="note">Fingerspelling A–Z (ASL). Show a letter and hold it about 1 second: it is typed automatically. Hold the same letter ~2 seconds to repeat it. J and Z are drawn in the air (pinky for J, index finger for Z). Open Train letters to teach the app your own hand for better accuracy.</p>
+  </section>
+</div>
+<script src="js/config.js"></script>
+<script src="js/foto.js"></script>
+<script src="js/speaking.js"></script>
+<script src="js/pomodoro.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/sign.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
